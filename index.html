@@ -550,8 +550,35 @@
     }
 
     function flipCard(index) {
-      // implemented in Task 7
-      console.log('flipCard', index, state.drawn[index]);
+      var drawn = state.drawn[index];
+      var cardEl = document.getElementById('card-' + index);
+      if (!cardEl) return;
+
+      var front = cardEl.querySelector('.card-front');
+      var data = drawn.card[drawn.orientation];
+
+      front.innerHTML =
+        '<div class="card-content">' +
+          '<div class="card-header-row">' +
+            '<span class="card-number">' + drawn.card.number + '</span>' +
+            '<span class="card-orientation ' + drawn.orientation + '">' + drawn.orientation + '</span>' +
+          '</div>' +
+          '<div class="card-name">' + drawn.card.name + '</div>' +
+          '<div class="card-wisdom">' + data.text + '</div>' +
+          '<hr class="card-divider">' +
+          '<pre class="card-trace">' + data.trace + '</pre>' +
+        '</div>';
+
+      cardEl.classList.add('flipped');
+
+      cardEl.addEventListener('transitionend', function handler(e) {
+        if (e.propertyName !== 'transform') return;
+        cardEl.removeEventListener('transitionend', handler);
+        var content = cardEl.querySelector('.card-content');
+        if (!content) return;
+        content.classList.add('glitching');
+        setTimeout(function() { content.classList.remove('glitching'); }, 150);
+      });
     }
 
     function drawSpread() {
