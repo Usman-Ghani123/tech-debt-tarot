@@ -539,6 +539,78 @@
     }
   }
 ];
+
+    const state = { drawn: [], phase: 'idle' };
+
+    function resetSpread() {
+      document.querySelectorAll('.card-slot').forEach(function(slot) {
+        slot.innerHTML = '<div class="card-slot-empty"></div>';
+      });
+      state.drawn = [];
+    }
+
+    function flipCard(index) {
+      // implemented in Task 7
+      console.log('flipCard', index, state.drawn[index]);
+    }
+
+    function drawSpread() {
+      state.phase = 'drawing';
+
+      var btn = document.getElementById('draw-btn');
+      btn.disabled = true;
+      btn.classList.add('shaking');
+      setTimeout(function() { btn.classList.remove('shaking'); }, 300);
+
+      // 3 unique cards, each randomly upright or reversed
+      var shuffled = CARDS.slice().sort(function() { return Math.random() - 0.5; });
+      state.drawn = shuffled.slice(0, 3).map(function(card) {
+        return { card: card, orientation: Math.random() < 0.5 ? 'upright' : 'reversed' };
+      });
+
+      // Render face-down cards into slots
+      document.querySelectorAll('.card-slot').forEach(function(slot, i) {
+        slot.innerHTML = '';
+
+        var container = document.createElement('div');
+        container.className = 'card-container entering';
+        container.style.animationDelay = (i * 80) + 'ms';
+
+        var cardEl = document.createElement('div');
+        cardEl.className = 'card';
+        cardEl.id = 'card-' + i;
+
+        var back = document.createElement('div');
+        back.className = 'card-back';
+        back.innerHTML = '<span class="card-back-sigil">&#9672;</span>';
+
+        var front = document.createElement('div');
+        front.className = 'card-front';
+
+        cardEl.appendChild(back);
+        cardEl.appendChild(front);
+        container.appendChild(cardEl);
+        slot.appendChild(container);
+      });
+
+      // Staggered flips: 600ms, 900ms, 1200ms
+      [0, 1, 2].forEach(function(i) {
+        setTimeout(function() { flipCard(i); }, 600 + i * 300);
+      });
+
+      // Re-enable button after last flip settles: 1200 + 700 (flip) + 200 (buffer) = 2100ms
+      setTimeout(function() {
+        btn.textContent = '✦ DRAW AGAIN ✦';
+        btn.disabled = false;
+        state.phase = 'revealed';
+      }, 2100);
+    }
+
+    document.getElementById('draw-btn').addEventListener('click', function() {
+      if (state.phase === 'drawing') return;
+      resetSpread();
+      drawSpread();
+    });
   </script>
 </body>
 </html>
