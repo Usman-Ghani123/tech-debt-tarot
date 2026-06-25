@@ -280,6 +280,20 @@
       75%  { transform: translate(-1px, 1px);  opacity: 1; }
       100% { transform: translate(0, 0);       opacity: 1; }
     }
+
+    @media (max-width: 600px) {
+      .spread {
+        flex-direction: column;
+        align-items: center;
+      }
+      .title {
+        font-size: 1.6rem;
+      }
+      .draw-btn {
+        font-size: 0.8rem;
+        padding: 0.7rem 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
