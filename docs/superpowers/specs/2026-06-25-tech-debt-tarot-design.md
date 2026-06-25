@@ -173,6 +173,7 @@ Each card has a unique thematic fake stack trace for both upright and reversed o
 
 ---
 
+
 ## Out of Scope
 
 - Backend / persistence of any kind
