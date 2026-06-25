@@ -306,7 +306,239 @@
   </div>
 
   <script>
-    // app code goes here
+    const CARDS = [
+  {
+    id: 0, name: "The Fool's Deploy", number: "0",
+    upright: {
+      text:  "Ship early, learn fast. The unknown is not the enemy.",
+      trace: "EarlyShipSuccess: iteration 1 deployed\n  at Courage.launch (unknown.js:1)\n  at Pipeline.run (ci.js:200)"
+    },
+    reversed: {
+      text:  "You pushed to main without a PR. On a Friday.",
+      trace: "DirectPushError: branch protection was disabled\n  at Git.push (main.js:1)\n  at Friday.afternoon (deploy.js:17)"
+    }
+  },
+  {
+    id: 1, name: "The Refactorer", number: "I",
+    upright: {
+      text:  "Clean boundaries emerge. The coupling dissolves. Ship it.",
+      trace: "RefactorComplete: coupling dissolved, tests green\n  at CleanCode.emerge (soul.js:1)\n  at BoundedContext.hold (domain.js:42)"
+    },
+    reversed: {
+      text:  "You will rewrite this twice and regret both times.",
+      trace: "ThirdRewriteError: estimation exceeded\n  at History.repeat (v3.js:1)\n  at Hubris.check (iteration.js:∞)"
+    }
+  },
+  {
+    id: 2, name: "The Legacy Monolith", number: "II",
+    upright: {
+      text:  "Ancient wisdom lives in undocumented code. Read before you delete.",
+      trace: "AncientWisdom: comment from 2008 still valid\n  at Read.before.delete (legacy.js:1)\n  at Respect.earn (history.js:144)"
+    },
+    reversed: {
+      text:  "Nobody knows what this does. Nobody will ask.",
+      trace: "UnknownBehaviorError: bus factor = 0\n  at Documentation.missing (legacy.js:???)\n  at LastEngineer.left (2022.js:1)"
+    }
+  },
+  {
+    id: 3, name: "The Infinite Loop", number: "III",
+    upright: {
+      text:  "Persistence yields results. Keep iterating.",
+      trace: "ConvergenceReached: loop terminated at step 7\n  at Persistence.pay (loop.js:7)\n  at Algorithm.halt (math.js:101)"
+    },
+    reversed: {
+      text:  "You have been debugging this for six hours. It is a typo.",
+      trace: "TypoException: semicolon missing since hour 1\n  at StareAt.screen (6hours.js:1)\n  at Variable.name (typo.js:∞)"
+    }
+  },
+  {
+    id: 4, name: "The Pull Request", number: "IV",
+    upright: {
+      text:  "Your peers sharpen your code. Invite their gaze.",
+      trace: "PeerReviewInsight: line 47 refactored\n  at Colleague.sharpen (review.js:1)\n  at Code.improve (pr.js:3)"
+    },
+    reversed: {
+      text:  "LGTM. Nobody read it.",
+      trace: "LGTMError: approved in 4 seconds\n  at Nobody.read (pr.js:1)\n  at Rubber.stamp (review.js:0)"
+    }
+  },
+  {
+    id: 5, name: "The Technical Debt", number: "V",
+    upright: {
+      text:  "A conscious shortcut, documented and bounded. Acceptable.",
+      trace: "DebtAcknowledged: TECH-∞ created\n  at Conscious.shortcut (todo.js:1)\n  at Ticket.filed (jira.js:42)"
+    },
+    reversed: {
+      text:  "This was supposed to be temporary. In 2019.",
+      trace: "TemporaryCodeError: context.year = 2019\n  at TODO.wait (fixlater.js:1)\n  at Hack.persist (temporary.js:∞)"
+    }
+  },
+  {
+    id: 6, name: "The Null Pointer", number: "VI",
+    upright: {
+      text:  "The void is acknowledged. Handle it gracefully.",
+      trace: "NullHandled: optional chaining applied\n  at Optional.unwrap (null-safe.js:1)\n  at EdgeCase.survive (handler.js:23)"
+    },
+    reversed: {
+      text:  "You assumed it would never be null. It was null.",
+      trace: "NullAssumptionError: field was always null\n  at HopeService.get (optimism.js:47)\n  at Production.run (live.js:∞)"
+    }
+  },
+  {
+    id: 7, name: "The Standup", number: "VII",
+    upright: {
+      text:  "Brief alignment moves the team forward.",
+      trace: "MeetingComplete: 8 minutes, 3 blockers surfaced\n  at Update.brief (standup.js:1)\n  at Timebox.hold (sync.js:900)"
+    },
+    reversed: {
+      text:  "This could have been an email. It is now 47 minutes long.",
+      trace: "MeetingOverflowError: 47 minutes elapsed\n  at Email.became (meeting.js:1)\n  at Agenda.missing (calendar.js:0)"
+    }
+  },
+  {
+    id: 8, name: "The Hotfix", number: "VIII",
+    upright: {
+      text:  "Swift action prevents catastrophe. The system holds.",
+      trace: "HotfixDeployed: p0 resolved in 12 minutes\n  at Swift.action (oncall.js:1)\n  at Incident.close (production.js:200)"
+    },
+    reversed: {
+      text:  "The fix ships at 4:57 PM on a Friday.",
+      trace: "FridayDeployError: 4:57 PM, no rollback plan\n  at Courage.misplace (hotfix.js:1)\n  at OnCall.phone (friday.js:17)"
+    }
+  },
+  {
+    id: 9, name: "The Abandoned Dependency", number: "IX",
+    upright: {
+      text:  "Stand on giants' shoulders — but check they still maintain it.",
+      trace: "DependencyAudit: maintainer active, 12 contributors\n  at Due.diligence (package.js:1)\n  at npm.audit (clean.js:0)"
+    },
+    reversed: {
+      text:  "847 open issues. Last commit: 2020. You ship tomorrow.",
+      trace: "PackageAbandonedError: issue #847 still open\n  at LastCommit.date (2020.js:1)\n  at Ship.tomorrow (deadline.js:9)"
+    }
+  },
+  {
+    id: 10, name: "The Merge Conflict", number: "X",
+    upright: {
+      text:  "Two truths reconciled become stronger than either.",
+      trace: "MergeResolved: histories reconciled\n  at Conflict.face (git.js:1)\n  at Truth.reconcile (merge.js:42)"
+    },
+    reversed: {
+      text:  "You accepted both sides. Production burns.",
+      trace: "AcceptBothError: <<<<<<< HEAD in production\n  at Merge.panic (conflict.js:1)\n  at Fire.start (main.js:1)"
+    }
+  },
+  {
+    id: 11, name: "The Architect", number: "XI",
+    upright: {
+      text:  "The system reveals its elegant, minimal structure.",
+      trace: "ArchitectureRevealed: 3 modules, clear interfaces\n  at Pattern.emerge (system.js:1)\n  at Complexity.tame (design.js:7)"
+    },
+    reversed: {
+      text:  "Six abstraction layers. One button. No docs.",
+      trace: "AbstractionLimitError: depth = 6\n  at Factory.of.factory (pattern.js:1)\n  at Button.click (facade/proxy/adapter/bridge.js:∞)"
+    }
+  },
+  {
+    id: 12, name: "The Deployment", number: "XII",
+    upright: {
+      text:  "Release with confidence. The pipeline is green.",
+      trace: "DeploySuccess: all checks passed\n  at Pipeline.green (ci.yml:200)\n  at Confidence.deploy (main.js:1)"
+    },
+    reversed: {
+      text:  "Works on my machine.",
+      trace: "EnvDivergenceError: works on localhost only\n  at My.machine (works.js:1)\n  at Production.differ (env.js:∞)"
+    }
+  },
+  {
+    id: 13, name: "The Stack Overflow", number: "XIII",
+    upright: {
+      text:  "Others have walked this path. Their wisdom awaits you.",
+      trace: "AnswerFound: 2847 upvotes, accepted\n  at Others.solved (stackoverflow.com:1)\n  at Search.before.ask (google.js:1)"
+    },
+    reversed: {
+      text:  "The accepted answer is from 2011. The API no longer exists.",
+      trace: "DeprecatedAnswerError: API removed in v3\n  at Answer.age (2011.js:1)\n  at Migration.guide (404.js:1)"
+    }
+  },
+  {
+    id: 14, name: "The Codebase", number: "XIV",
+    upright: {
+      text:  "Balance: new features retire old ones. The system breathes.",
+      trace: "EntropyReduced: feature added, dead code removed\n  at Balance.keep (codebase.js:1)\n  at System.breathe (cleanup.js:42)"
+    },
+    reversed: {
+      text:  "40,000 lines. No tests. One file.",
+      trace: "FileSizeLimitError: 40000 lines, 0 tests\n  at God.object (everything.js:1)\n  at Fear.refactor (untouched.js:∞)"
+    }
+  },
+  {
+    id: 15, name: "The Sprint", number: "XV",
+    upright: {
+      text:  "Contained chaos becomes velocity. The timebox is sacred.",
+      trace: "SprintComplete: velocity 42, scope held\n  at Timebox.sacred (sprint.js:1)\n  at Team.focus (velocity.js:8)"
+    },
+    reversed: {
+      text:  "Scope creep arrives on day two. It never leaves.",
+      trace: "ScopeCreepError: entered day 2, never terminated\n  at Feature.added (sprint.js:3)\n  at Stakeholder.idea (slack.js:∞)"
+    }
+  },
+  {
+    id: 16, name: "The Senior Dev", number: "XVI",
+    upright: {
+      text:  "Hard-won experience illuminates the path. Ask them.",
+      trace: "KnowledgeTransferred: pair session complete\n  at Experience.share (mentor.js:1)\n  at Wisdom.document (runbook.js:42)"
+    },
+    reversed: {
+      text:  "They left six months ago. Nobody has the password.",
+      trace: "OffboardingError: last known holder departed\n  at Knowledge.vanish (bus.factor:1)\n  at Password.lost (vault.js:404)"
+    }
+  },
+  {
+    id: 17, name: "The Unit Test", number: "XVII",
+    upright: {
+      text:  "Your assumptions, made explicit and verified.",
+      trace: "TestPassed: assumption verified in 12ms\n  at Assert.truth (test.js:1)\n  at Confidence.earn (suite.js:42)"
+    },
+    reversed: {
+      text:  "100% coverage. All mocks. Zero real confidence.",
+      trace: "MockConfidenceError: coverage=100, reality=0\n  at Mock.everything (test.js:1)\n  at Real.database (untested.js:∞)"
+    }
+  },
+  {
+    id: 18, name: "The README", number: "XVIII",
+    upright: {
+      text:  "Documentation is an act of kindness to your future self.",
+      trace: "DocumentationFound: setup succeeded first try\n  at Kindness.future.self (readme.md:1)\n  at Instructions.work (setup.js:1)"
+    },
+    reversed: {
+      text:  "Last updated: three years ago. The setup steps fail.",
+      trace: "StaleDocError: last updated 3 years ago\n  at Step.3.fail (readme.md:47)\n  at Tool.deprecated (2021.js:1)"
+    }
+  },
+  {
+    id: 19, name: "The Environment Variable", number: "XIX",
+    upright: {
+      text:  "Configuration externalised. The system adapts.",
+      trace: "ConfigExternalised: 12-factor compliant\n  at DotEnv.load (config.js:1)\n  at Secret.safe (vault.js:3)"
+    },
+    reversed: {
+      text:  "It was hardcoded in production.",
+      trace: "HardcodedSecretError: committed in 2018, still there\n  at String.literal (production.js:1)\n  at Audit.found (git.history:∞)"
+    }
+  },
+  {
+    id: 20, name: "The Root Cause", number: "XX",
+    upright: {
+      text:  "The true source reveals itself at last. Fix the cause.",
+      trace: "RootCauseFound: 5-whys complete\n  at Symptom.ignore (never.js:0)\n  at Cause.fix (postmortem.js:1)"
+    },
+    reversed: {
+      text:  "It is DNS. It is always DNS.",
+      trace: "DNSPropagationError: it was always DNS\n  at Check.dns.last (lesson.js:1)\n  at DNS.it.always.is (always.js:∞)"
+    }
+  }
+];
   </script>
 </body>
 </html>
