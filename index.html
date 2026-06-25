@@ -32,9 +32,75 @@
       padding: 3rem 1rem 4rem;
       color: var(--wisdom);
     }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(201,168,76,0.45), 0 0 50px rgba(201,168,76,0.2);
+      letter-spacing: 0.08em;
+    }
+
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: rgba(232,224,208,0.38);
+      margin-top: 0.6rem;
+      letter-spacing: 0.05em;
+    }
+
+    .draw-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--gold);
+      background: transparent;
+      border: 1px solid var(--gold);
+      padding: 0.8rem 2.2rem;
+      cursor: pointer;
+      letter-spacing: 0.18em;
+      margin-bottom: 3rem;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .draw-btn:hover:not(:disabled) {
+      background: rgba(201,168,76,0.07);
+      box-shadow: 0 0 22px rgba(201,168,76,0.28);
+    }
+
+    .draw-btn:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .draw-btn.shaking {
+      animation: shake 0.3s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%       { transform: translateX(-4px); }
+      40%       { transform: translateX(4px); }
+      60%       { transform: translateX(-3px); }
+      80%       { transform: translateX(3px); }
+    }
   </style>
 </head>
 <body>
+  <header class="header">
+    <h1 class="title">&#10022; TECH DEBT TAROT &#10022;</h1>
+    <p class="subtitle">// consult the ancient wisdom of your codebase</p>
+  </header>
+
+  <button class="draw-btn" id="draw-btn">&#10022; CONSULT THE STACK &#10022;</button>
+
   <script>
     // app code goes here
   </script>
