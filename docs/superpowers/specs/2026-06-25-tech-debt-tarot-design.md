@@ -138,6 +138,9 @@ Pure CSS: deep purple radial gradient, gold border, a Unicode sigil (`◈`) cent
 ### No-Repeat Guarantee
 Within a single spread, the 3 drawn cards are always unique. On re-draw, the full 21-card deck reshuffles.
 
+### Button State
+Button is disabled (pointer-events: none, reduced opacity) for the entire draw animation sequence — from click until all 3 cards are revealed — to prevent double-draws.
+
 ---
 
 ## The 21 Cards
@@ -175,4 +178,4 @@ Each card has a unique thematic fake stack trace for both upright and reversed o
 - Backend / persistence of any kind
 - Card history across page reloads
 - Sharing / screenshot features
-- Mobile-specific layout optimisations (responsive is fine, mobile-first is not required)
+- Mobile-first layout (desktop-first; on narrow viewports cards stack vertically, that's sufficient)
