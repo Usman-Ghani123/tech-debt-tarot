@@ -2,7 +2,7 @@
 
 This repo includes a `/smart-workflow` custom command for Claude Code. It runs a plan-first development workflow that figures out which tools each task actually needs before writing a single line of code.
 
-To use it, you need four plugins installed. Here's how.
+To use it, you need a few plugins and tools installed. Here's how.
 
 ---
 
@@ -54,7 +54,45 @@ Or drop it in `~/.claude/commands/` to make it available in every project on you
 
 ---
 
-## Step 4 (optional): Install caveman
+## Step 4: Install code-review-graph
+
+The workflow auto-triggers a codebase visualization when you commit more than 5 source files. This tool builds the symbol graph and generates the Obsidian vault.
+
+**Requires Python 3.10+.** Check with `python --version` before running.
+
+```bash
+pip install code-review-graph[communities]
+```
+
+The `[communities]` extra enables community detection, which groups related symbols into modules — without it the architecture overview is much less useful.
+
+Then wire it into Claude Code:
+
+```bash
+code-review-graph install --platform claude-code
+```
+
+This writes the MCP server config automatically. After this, build the initial graph from your project root:
+
+```bash
+code-review-graph build
+```
+
+Run `code-review-graph build` once per project, then again whenever you want a fresh graph. Incremental updates are fast (under 2 seconds), but the first build takes ~10 seconds on a 500-file project.
+
+---
+
+## Step 5: Install Obsidian
+
+The visualization exports a markdown vault. You need Obsidian to open it and use the interactive graph view.
+
+Download from: **https://obsidian.md/download**
+
+After installing Obsidian, open it and use **Open folder as vault** to point it at the folder the workflow generates (the command will tell you the path after it runs).
+
+---
+
+## Step 6 (optional): Install caveman
 
 Caveman keeps Claude's responses terse. It's not required for the workflow to function, but it cuts down on filler in long builds.
 

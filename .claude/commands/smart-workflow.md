@@ -144,3 +144,7 @@ practices:
      community/module so Obsidian's native graph filters can toggle between
      "show me the architecture" and "show me this one function's
      connections."
+
+7. **After a successful export, tell the user the vault path.** They need
+   it to open Obsidian and select "Open folder as vault". Without the path,
+   they have to hunt for the folder. State it explicitly before closing.
