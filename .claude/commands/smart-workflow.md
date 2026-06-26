@@ -20,10 +20,11 @@ Read through the approved plan and check each item. Output this block before pro
 
 ```
 Classification:
-[ ] Frontend/UI work (HTML/CSS/components)?   → design-taste-frontend
-[ ] Third-party library or API?               → context7 docs
-[ ] Code graph / architecture visualization?  → visualization protocol
-[ ] Refactor or cleanup task?                 → code-simplifier
+[ ] Frontend/UI work (HTML/CSS/components)?              → design-taste-frontend
+[ ] Third-party library or API?                          → context7 docs
+[ ] Visualization needed? (explicit request OR           → visualization protocol
+    changeset >5 source code files)
+[ ] Refactor or cleanup task?                            → code-simplifier
 ```
 
 Mark each `[x]` or `[ ]`. Then follow the per-skill rules below for every item marked `[x]`.
@@ -44,9 +45,21 @@ implementer briefs reference this cache — do not re-pull per task. Only
 pull again if a task surfaces an endpoint gap not covered in the initial
 pull.
 
-**visualization protocol — Code graph / architecture**
-Follow the full visualization protocol section below. Do not use tool
-default output and stop.
+**visualization protocol — Codebase graph**
+Two triggers, same protocol, different granularity:
+
+- **Explicit request** (user asked for graph/architecture view): run at
+  community/module level. Use `get_architecture_overview_tool` as primary
+  artifact. Avoid per-symbol hairball dumps.
+- **Auto-trigger** (changeset exceeds 5 source code files — language files
+  only, not .md/.json/.yaml/config/markup): run at per-symbol granularity
+  AFTER all tasks complete, before declaring work finished. Goal is
+  exploration and Q&A, not overview.
+
+Both cases: generate the Obsidian vault (per-symbol .md files tagged by
+community/module) and a graphical export (HTML/D3 or equivalent). Follow the
+full visualization protocol section below. Verify export is non-empty before
+reporting success.
 
 **code-simplifier — Refactor or cleanup**
 Run code-simplifier on the touched files AFTER the implementer subagent
@@ -64,6 +77,7 @@ For each task, check your Step 2 classification before dispatching:
 - Does this task touch frontend? → design-taste-frontend must already be done.
 - Does this task hit a third-party API? → reference doc cache from Step 2, not a fresh context7 pull.
 - Does this task refactor code? → schedule code-simplifier after the commit.
+- Was visualization flagged in Step 2? → explicit request: run community/module level now; auto-trigger (>5 source files): run per-symbol after final task, before closing.
 
 Run requesting-code-review before declaring the work finished.
 
